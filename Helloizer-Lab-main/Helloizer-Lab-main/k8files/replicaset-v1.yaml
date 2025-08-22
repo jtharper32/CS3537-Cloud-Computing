@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  labels:
+    app: helloizer
+    version: "1"
+  name: helloizer
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: helloizer
+      version: "1"
+  template:
+    metadata:
+      labels:
+        app: helloizer
+        version: "1"
+    spec:
+      containers:
+        - name: helloizer
+          image: us-east1-docker.pkg.dev/sample-project-hills-spring25/restful/helloizer:v1

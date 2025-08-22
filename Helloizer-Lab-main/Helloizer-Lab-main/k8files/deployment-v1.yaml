@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: helloizer
+  labels:
+    run: helloizer
+spec:
+  selector:
+    matchLabels:
+      run: helloizer
+  replicas: 3
+  template:
+    metadata:
+      labels:
+        run: helloizer
+    spec:
+      containers:
+        - name: helloizer
+          image: us-east1-docker.pkg.dev/sample-project-hills-spring25/restful/helloizer:v1
+          imagePullPolicy: Always

@@ -1,0 +1,19 @@
+steps:
+# Use maven to package the app, skip running tests
+- name: 'maven:3.9-eclipse-temurin-17'
+  entrypoint: mvn
+  args: ['clean', 'package', '-DskipTests']
+# Build the container image  
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['build', '-t', 'us-east1-docker.pkg.dev/harperjt/restfulapi/restful-app-hw5', '.']
+# Push the container image to Artifact Registry  
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['push', 'us-east1-docker.pkg.dev/harperjt/restfulapi/restful-app-hw5']
+# Deploy container image to Cloud Run  
+- name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+  entrypoint: gcloud
+  args: ['run', 'deploy', 'restful-app-hw5', '--image', 'us-east1-docker.pkg.dev/harperjt/restfulapi/restful-app-hw5', '--region', 'us-east1', '--platform', 'managed']
+options:
+  logging: CLOUD_LOGGING_ONLY
+images:
+- 'us-east1-docker.pkg.dev/harperjt/restfulapi/restful-app-hw5'
